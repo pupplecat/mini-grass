@@ -9,7 +9,8 @@
     "anchor-tests": "ts-mocha"
   },
   "dependencies": {
-    "@coral-xyz/anchor": "^0.30.1"
+    "@coral-xyz/anchor": "^0.30.1",
+    "bn.js": "^5.2.1"
   },
   "devDependencies": {
     "@solana/spl-token": "^0.4.8",
