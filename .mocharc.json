@@ -1,0 +1,11 @@
+{
+  "require": "ts-mocha",
+  "timeout": 1000000,
+  "file": "./tests/setup.ts",
+  "exit": true,
+  "spec": "tests/**/*.test.ts",
+  "extension": [
+    "ts"
+  ],
+  "package": "./tsconfig.json"
+}
