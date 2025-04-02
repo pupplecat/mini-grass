@@ -6,3 +6,4 @@ edition = "2021"
 [dependencies]
 actix-web = {workspace = true}
 serde = { workspace = true, features = ["derive"] }
+dotenv = { workspace = true }
