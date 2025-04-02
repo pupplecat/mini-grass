@@ -8,3 +8,5 @@ test-ledger
 .vscode
 .env
 .anchor
+
+bw_file.json

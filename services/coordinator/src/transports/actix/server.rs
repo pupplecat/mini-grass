@@ -1,15 +1,21 @@
-use std::{
-    collections::HashMap,
-    io::Result,
-    sync::{Arc, Mutex},
+use std::{io::Result, sync::Arc};
+
+use actix_web::{
+    dev::{HttpServiceFactory, Server},
+    web, App, HttpServer,
 };
+use tracing::info;
+use tracing_bunyan_formatter::JsonStorageLayer;
+use tracing_log::LogTracer;
+use tracing_subscriber::{layer::SubscriberExt, EnvFilter, Registry};
 
-use actix_web::{dev::Server, web, App, HttpResponse, HttpServer, Responder};
-use serde::{Deserialize, Serialize};
+use crate::{container::ServiceContext, core::config::Config, transports::actix::health_handler};
 
-use crate::{container::ServiceContext, core::config::Config};
+use super::report_bandwidth_handler;
 
 pub async fn serve(config: &Config) -> Result<()> {
+    initial_logger();
+
     let service_context = ServiceContext::new(config);
 
     let server = actix_serve(service_context, &config.listening_address())?;
@@ -23,41 +29,32 @@ where
 {
     let ctx = Arc::from(service_context.clone());
     let server = HttpServer::new(move || {
-        App::new()
-            .app_data(ctx.clone())
-            .route("/report", web::post().to(report_bw))
+        let app = App::new().app_data(web::Data::from(ctx.clone()));
+
+        app.service(build_api()).service(health_handler::health)
     })
     .bind(address)?;
 
-    println!("service bound address: {}", address);
+    info!("binding address: {}", address);
 
     Ok(server.run())
 }
 
-async fn report_bw(data: web::Json<NodeReport>, state: web::Data<AppState>) -> impl Responder {
-    let mut contribs = state.contributions.lock().unwrap();
-    let total = contribs.entry(data.node_id.clone()).or_insert(0);
-    *total += data.bandwidth;
-    HttpResponse::Ok().json(ReportResponse {
-        node_id: data.node_id.clone(),
-        status: "recorded".to_string(),
-        total_bw: *total,
-    })
+fn build_api() -> impl HttpServiceFactory {
+    web::scope("/api")
+        .service(web::scope("/report").service(report_bandwidth_handler::report_bandwidth))
 }
 
-#[derive(Deserialize)]
-struct NodeReport {
-    node_id: String,
-    bandwidth: u64,
-}
+pub fn initial_logger() {
+    let env_filter_layer = EnvFilter::new("INFO");
 
-#[derive(Serialize)]
-struct ReportResponse {
-    node_id: String,
-    status: String,
-    total_bw: u64,
-}
+    let _ = LogTracer::init();
+    let formatter_layer = tracing_subscriber::fmt::layer().with_test_writer();
+    let subscriber = Registry::default()
+        .with(env_filter_layer)
+        .with(JsonStorageLayer)
+        .with(formatter_layer);
 
-struct AppState {
-    contributions: Mutex<HashMap<String, u64>>,
+    // panic here is expected, in e2e, subscriber my already been set by prior test case.
+    let _ = tracing::subscriber::set_global_default(subscriber);
 }
