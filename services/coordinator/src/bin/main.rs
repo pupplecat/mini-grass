@@ -5,6 +5,9 @@ use std::io::Result;
 async fn main() -> Result<()> {
     dotenv::dotenv().ok();
 
+    // load config from environment variables
     let config = Config::from_env();
+
+    // start actix server
     coordinator::transports::actix::server::serve(&config).await
 }

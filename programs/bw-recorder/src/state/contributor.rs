@@ -13,12 +13,14 @@ pub struct Contributor {
 
 impl Contributor {
     pub fn record_bandwidth(&mut self, bandwidth: u64, timestamp: u64) -> Result<()> {
+        // new timestamp must must be newer than the previous recorded
         validate!(
             timestamp > self.last_timestamp,
             ErrorCode::InvalidTimestamp,
             "Timestamp already pass",
         )?;
 
+        // Update total_bandwidth and set last_timestamp
         self.total_bandwidth += bandwidth;
         self.last_timestamp = timestamp;
 

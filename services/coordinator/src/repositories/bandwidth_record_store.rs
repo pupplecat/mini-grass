@@ -7,9 +7,11 @@ use super::error::RepoError;
 
 #[async_trait]
 pub trait BandwidthRecordRepository: Send + Sync {
+    // Record reported bandwidth usage
     async fn record(&self, node_id: u64, bandwidth: u64) -> Result<u64, RepoError>;
 }
 
+// Record reported bandwidth usage
 pub struct JsonFileBandwidthRecordRepositoryImpl {
     filename: String,
 }

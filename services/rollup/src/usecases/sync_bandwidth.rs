@@ -34,14 +34,17 @@ pub fn new(
 #[async_trait]
 impl SyncBandwidthUsecase for SyncBandwidthUsecaseImpl {
     async fn sync(&self) -> Result<(), RollupError> {
+        // read all records from repository
         let records = self.bandwidth_record_repo.read_all().await?;
 
         info!("record counts: {}", records.len());
 
+        // No new data, skip the execution
         if records.is_empty() {
             return Ok(());
         }
 
+        // call record bandwidth to submit onchain
         let timestamp = Utc::now().timestamp() as u64;
         let tx = self
             .bw_recorder_client
@@ -50,6 +53,7 @@ impl SyncBandwidthUsecase for SyncBandwidthUsecaseImpl {
 
         info!("Record synced: {}", tx);
 
+        // clear previous recorded information
         self.bandwidth_record_repo.clear().await?;
         info!("Record cleared");
 
