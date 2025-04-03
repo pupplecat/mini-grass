@@ -15,7 +15,7 @@ impl Recorder {
         Ok(())
     }
     pub const fn get_size() -> usize {
-        return 8;
+        8
     }
 }
 
