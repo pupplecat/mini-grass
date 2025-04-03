@@ -8,4 +8,4 @@ rm -rf ./test-ledger
 
 # Start solana-test-validator with anchor programs
 solana-test-validator --reset --ledger ./test-ledger \
-  --bpf-program qL45T6VenxJA8RNaNupKW2K5am8KF1jWTJHEmHqzhGf ./target/deploy/bw_recorder.so
+  --bpf-program Pwr6Zo12iYxEqqeaLsWXcaCuw5bw5M3QdZxFnULhjmU ./target/deploy/bw_recorder.so

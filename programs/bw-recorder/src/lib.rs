@@ -8,7 +8,7 @@ mod state;
 use instructions::*;
 pub use state::*;
 
-declare_id!("qL45T6VenxJA8RNaNupKW2K5am8KF1jWTJHEmHqzhGf");
+declare_id!("Pwr6Zo12iYxEqqeaLsWXcaCuw5bw5M3QdZxFnULhjmU");
 
 #[program]
 pub mod bw_recorder {
