@@ -4,15 +4,25 @@ version = "0.1.0"
 edition = "2021"
 
 [dependencies]
+bw-recorder = { workspace = true, features = ["cpi"] }
+
+anchor-lang = { workspace = true }
+async-trait = { workspace = true }
+borsh = { workspace = true }
+bytemuck = { workspace = true }
 chrono = { workspace = true }
+derive_more = { workspace = true }
 dotenv = { workspace = true }
 job_scheduler = { workspace = true }
 tokio = { workspace = true, features = ["fs", "macros", "rt-multi-thread"] }
 serde = { workspace = true, features = ["derive"] }
 serde_json = { workspace = true }
+solana-program = { workspace = true }
+solana-sdk = { workspace = true }
+solana-client = { workspace = true }
 tracing = { workspace = true }
 tracing-appender = { workspace = true }
 tracing-futures = { workspace = true }
-tracing-subscriber = { workspace = true, features = ["env-filter"]}
+tracing-subscriber = { workspace = true, features = ["env-filter"] }
 tracing-bunyan-formatter = { workspace = true }
 tracing-log = { workspace = true }
