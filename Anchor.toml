@@ -5,7 +5,7 @@ resolution = true
 skip-lint = false
 
 [programs.localnet]
-bw-recorder = "qL45T6VenxJA8RNaNupKW2K5am8KF1jWTJHEmHqzhGf"
+bw-recorder = "Pwr6Zo12iYxEqqeaLsWXcaCuw5bw5M3QdZxFnULhjmU"
 
 [registry]
 url = "https://api.apr.dev"
