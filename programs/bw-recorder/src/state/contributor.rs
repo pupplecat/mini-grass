@@ -26,7 +26,7 @@ impl Contributor {
     }
 
     pub const fn get_size() -> usize {
-        return 8 + 8;
+        8 + 8
     }
 }
 

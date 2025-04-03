@@ -1,6 +1,6 @@
 use std::sync::Arc;
 
-use actix_web::{get, post, web, HttpResponse};
+use actix_web::{post, web};
 use display_json::DebugAsJson;
 use serde::{Deserialize, Serialize};
 use tracing::instrument;

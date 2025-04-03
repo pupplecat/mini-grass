@@ -20,7 +20,7 @@ impl ServiceContext {
 
     fn json_file_bandwidth_record_repo(&self) -> Arc<dyn BandwidthRecordRepository> {
         let repo: Arc<dyn BandwidthRecordRepository> =
-            Arc::from(bandwidth_record_store::new(self.config.bw_filename.clone()));
+            bandwidth_record_store::new(self.config.bw_filename.clone());
 
         repo
     }
