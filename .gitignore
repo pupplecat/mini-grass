@@ -10,3 +10,4 @@ test-ledger
 .anchor
 
 bw_file.json
+payer.json
