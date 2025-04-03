@@ -12,9 +12,13 @@ pub fn record_bandwidth<'info>(
     let recorder = &mut ctx.accounts.recorder;
     let contributor = &mut ctx.accounts.contributor;
 
+    // record contributor bandwidth
     contributor.record_bandwidth(params.bandwidth, params.timestamp)?;
+
+    // record overall bandwidth
     recorder.record_bandwidth(params.bandwidth)?;
 
+    // emit BandwidthRecorded event
     BandwidthRecorded::emit_event(
         params.node_id,
         params.bandwidth,

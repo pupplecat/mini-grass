@@ -9,6 +9,7 @@ pub struct Config {
 
 impl Config {
     pub fn from_env() -> Self {
+        // load configuration from environment variables
         Self {
             host: env::var("HOST").unwrap(),
             port: str::parse::<u16>(env::var("PORT").unwrap().as_str()).unwrap(),

@@ -3,6 +3,7 @@ use anchor_lang::prelude::*;
 use crate::state::{Recorder, Size};
 
 pub fn initialize<'info>(_ctx: Context<'_, '_, '_, 'info, Initialize<'info>>) -> Result<()> {
+    // State account created and initialize with default value
     Ok(())
 }
 

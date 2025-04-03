@@ -13,10 +13,13 @@ use super::error::SchedulerError;
 pub async fn serve(config: &Config) -> Result<(), SchedulerError> {
     initial_logger();
 
+    // initialize contract and fund payer account
     initialize_contract(config).await?;
 
+    // Create a new JobScheduler instance
     let mut scheduler = JobScheduler::new();
 
+    // Add a new Job
     scheduler.add(Job::new(config.job_schedule.parse().unwrap(), || {
         let config_clone = config.clone();
         tokio::spawn(async move {
@@ -25,6 +28,7 @@ pub async fn serve(config: &Config) -> Result<(), SchedulerError> {
     }));
 
     info!("Scheduler started: {}", &config.job_schedule);
+    // Keep the service alive
     loop {
         scheduler.tick();
 
@@ -37,6 +41,7 @@ pub async fn initialize_contract(config: &Config) -> Result<(), SchedulerError> 
 
     let ctx = ServiceContext::new(config);
 
+    // perform prepare contracts
     ctx.account_usecase().prepare_contracts().await?;
 
     Ok(())
@@ -47,6 +52,7 @@ pub async fn run_schedule(config: &Config) {
 
     let ctx = ServiceContext::new(config);
 
+    // perform sync recorded bandwidth
     let ret = ctx.sync_bandwidth_usecase().sync().await;
 
     if ret.is_ok() {
@@ -54,6 +60,7 @@ pub async fn run_schedule(config: &Config) {
         return;
     }
 
+    // Log failed case
     error!("Execution failed: {}", ret.err().unwrap());
 }
 

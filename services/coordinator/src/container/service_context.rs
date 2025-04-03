@@ -19,6 +19,7 @@ impl ServiceContext {
     }
 
     fn json_file_bandwidth_record_repo(&self) -> Arc<dyn BandwidthRecordRepository> {
+        // create a new BandwidthRecordRepository
         let repo: Arc<dyn BandwidthRecordRepository> =
             bandwidth_record_store::new(self.config.bw_filename.clone());
 
@@ -26,6 +27,7 @@ impl ServiceContext {
     }
 
     pub fn report_bandwidth_usecase(&self) -> Arc<dyn ReportBandwidthUsecase> {
+        // create a new ReportBandwidthUsecase
         let usecase: Arc<dyn ReportBandwidthUsecase> = Arc::from(report_bandwidth::new(
             self.json_file_bandwidth_record_repo(),
         ));
